@@ -1,0 +1,12 @@
+function [ W ] = LinearRegression( X,Y,order )
+%This function is computing the linear regression from a set of data
+%INPUT: 
+%   - X: input data 
+%   - Y=Y(X) output function
+%   - order of the regression
+
+phi=repmat(X,1,order+1).^(repmat(0:order,size(X,1),1));
+W=(phi'*phi)^(-1) * phi'* Y;
+
+end
+

@@ -1,0 +1,78 @@
+ hgpackage immoprices;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import org.jsoup.select.Elements;
+
+public class GenerateCsv {
+
+   
+   public GenerateCsv(String sFilename,Elements asked_price_list,
+		   Elements surface_room_list,Elements address_list,Elements city_list,Elements final_price_list)
+   {
+	   generateCsvFile(sFilename,asked_price_list,surface_room_list,address_list,city_list,final_price_list); 
+   }   
+   
+   private static void generateCsvFile(String sFilename,Elements asked_price_list,
+		   Elements surface_room_list,Elements address_list,Elements city_list,Elements final_price_list)
+   {
+	try
+	{
+	    FileWriter writer = new FileWriter(sFilename);
+	    
+	    writer.append("AskedPrice");
+	    writer.append(',');
+	    writer.append("FinalPrice");
+	    writer.append(',');
+	    writer.append("Surface");
+	    writer.append('\n');
+	    
+	    int n=asked_price_list.size();
+	
+		int i;
+		for(i=0;i<n;i++){
+			
+			String asked_price_str=asked_price_list.get(i).text();
+			String surface_room_str = surface_room_list.get(i).text();
+			String final_price_str = final_price_list.get(i).text();
+			
+			//sort the data
+			asked_price_str=asked_price_str.substring(13, asked_price_str.length() -3).replace(" ", "");
+			final_price_str=final_price_str.substring(9, final_price_str.length() -3).replace(" ", "");
+			String asked_price_real="";
+
+
+			for (char ch: asked_price_str.toCharArray()) {
+				if (ch>='0' && ch<= '9') asked_price_real+=ch;
+			}
+
+			writer.append(asked_price_real);
+		    writer.append(',');
+		    
+			String final_price_real="";
+
+			for (char ch: final_price_str.toCharArray()) {
+				if (ch>='0' && ch<= '9') final_price_real+=ch;
+			}
+		    writer.append(final_price_real);
+		    writer.append(',');
+		    int k=0;
+		    surface_room_str=surface_room_str.replace(',', '.');
+		    while ( ( surface_room_str.charAt(k) >= '0' && surface_room_str.charAt(k)  <= '9') || surface_room_str.charAt(k)=='.' ) {
+		    			k++;
+		    }
+		    writer.append(surface_room_str.substring(0, k));
+		    writer.append('\n');
+		    
+		}
+
+	    writer.flush();
+	    writer.close();
+	}
+	catch(IOException e)
+	{
+	     e.printStackTrace();
+	} 
+    }
+}
+
