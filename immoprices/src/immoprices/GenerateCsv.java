@@ -28,11 +28,19 @@ public class GenerateCsv {
 	    writer.append(',');
 	    writer.append("Surface");
 	    writer.append(',');	    
-	    writer.append("Room number");
+	    writer.append("Number_room");
 	    writer.append(',');
-	    writer.append("Sold date");
-	    writer.append('\n');
-	    
+	    writer.append("Year");
+	    writer.append(',');
+	    writer.append("Month");
+	    writer.append(',');
+	    writer.append("Day");
+	    /*writer.append(',');
+	    writer.append("Address");
+	    writer.append(',');
+	    writer.append("Area");
+	    writer.append(',');*/
+	    writer.append('\n');    
 	    int n=asked_price_list.size();
 	
 		int i;
@@ -85,20 +93,32 @@ public class GenerateCsv {
 					room_number_str=room_number_str.substring(k+5, room_number_str.length()-4).replaceAll("\\s+","").replace(',', '.');
 				}
 				else{
-					room_number_str=room_number_str.replaceAll("\\s+","").replace(',', '.').replaceAll("\\w+","");
+					room_number_str=room_number_str.substring(1, room_number_str.length()-4).replace(',', '.').replaceAll("\\s+","");
 				}
 			}
 			else {
 		    	room_number_str="NaN";
 			}		    
 			writer.append(room_number_str+',');
+		    
 		    //Writing sold date
 		    String sold_date_str=sold_date_list.get(i).text();
 			sold_date_str=sold_date_str.substring(5, sold_date_str.length());
-		    writer.append(sold_date_str);
-		    
-		    writer.append(',');
-		    writer.append('\n');
+			int k_date=0;
+			for (String p : sold_date_str.split("-")){
+			    writer.append(p);
+			    if (k_date<2){writer.append(',');}
+			    k_date++;
+			}
+			
+			//Writing address
+			/*String address_str=address_list.get(i).text().replaceAll(",", " ");
+		    writer.append(address_str+',');
+			//Writing city
+		    String city_str=city_list.get(i).text().replaceAll(",", " ");
+		    writer.append(city_str+',');
+		    */
+		 	writer.append('\n');
 		    
 		}
 
