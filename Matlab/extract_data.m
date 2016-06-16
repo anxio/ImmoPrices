@@ -50,7 +50,17 @@ clear all;
 close all
 plotArea('Gamla');
 
-%% Extract data
+%% Correlation study
+clear all;
+close all;
+
+data = csvread('Satra.csv',1,0);
+M=data(~any(isnan(data),2),:);
+M(:,1:2)=M(:,1:2)./10^6;
+
+R = corrcoef(M);
+
+%% Linear regression
 clear all;
 close all;
 order=4;
@@ -68,6 +78,8 @@ nbiter=1000;
 %[ W,phi ] = LinearRegressionSteepestDescent(  M(testseqsize+1:end,vect_input),M(testseqsize+1:end,vect_output),order,eta,nbiter );
 MSE_training=mean((M(testseqsize+1:end,vect_output)-phi*W).^2);
 error_training=M(testseqsize+1:end,vect_output)-phi*W;
+mean_abs_error_training=mean(abs(error_training));
+
 figure;
 histogram(error_training,100);
 
@@ -81,3 +93,5 @@ figure
     hold on
     plot(M(testseqsize+1:end,vect_plot),M(testseqsize+1:end,vect_output),'o');
     plot(M(testseqsize+1:end,vect_plot),phi*W,'x');
+    
+    

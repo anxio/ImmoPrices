@@ -1,5 +1,5 @@
 function [ W,phi ] = LinearRegression( X,Y,order )
-%This function is computing the linear regression from a set of data
+%This function is computing a linear regression using the normal equations.
 %INPUT: 
 %   - X: matrix of input data
 %   - Y=Y(X) output array

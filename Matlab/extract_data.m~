@@ -50,7 +50,17 @@ clear all;
 close all
 plotArea('Gamla');
 
-%% Extract data
+%% Correlation study
+clear all;
+close all;
+
+data = csvread('Satra.csv',1,0);
+M=data(~any(isnan(data),2),:);
+M(:,1:2)=M(:,1:2)./10^6;
+
+R = corrcoef(M);
+
+%% Linear regression
 clear all;
 close all;
 order=4;
@@ -66,14 +76,18 @@ nbiter=1000;
 
 [ W,phi ] = LinearRegression( M(testseqsize+1:end,vect_input),M(testseqsize+1:end,vect_output),order );
 %[ W,phi ] = LinearRegressionSteepestDescent(  M(testseqsize+1:end,vect_input),M(testseqsize+1:end,vect_output),order,eta,nbiter );
-MSE_trainig=mean((M(testseqsize+1:end,vect_output)-phi*W).^2);
-error_training=M(1:testseqsize,vect_output)-phi_test*W;
+MSE_training=mean((M(testseqsize+1:end,vect_output)-phi*W).^2);
+error_training=M(testseqsize+1:end,vect_output)-phi*W;
+mean_abs_error=mean(abs(error_training));
 
-[ ~,phi_test ] = LinearRegression( M(1:testseqsize,vect_input),M(1:testseqsize,vect_output),order);
+figure;
+histogram(error_training,100);
 
+[ ~,phi_test] = LinearRegression( M(1:testseqsize,vect_input),M(1:testseqsize,vect_output),order);
 MSE_test=mean((M(1:testseqsize,vect_output)-phi_test*W).^2);
 error_test=M(1:testseqsize,vect_output)-phi_test*W;
-histogram(error_test,100);
+figure;
+histogram(error_test,10);
 
 figure
     hold on

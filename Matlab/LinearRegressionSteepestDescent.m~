@@ -1,13 +1,9 @@
 function [ W,phi ] = LinearRegressionSteepestDescent( X,Y,order,eta,nbiter )
-% This function is performing a linear regression using steepest descent.
+%UNTITLED5 Summary of this function goes here
 %INPUT
 %   -X: matrix of input data, each column is a variable, each row a sample
-%   -Y: output data
-%   -order: Y = phi*W with phi=[ones(size(X,1),1), X, ..., X^order]
+%   -Y: 
 %   -eta: learning rate parameter
-%   -nbiter: number of iterations
-%OUTPUT
-%   -W
 
 W=zeros(1+size(X,2)*order,1);
 phi=[ones(size(X,1),1),repmat(X,1,order)...
